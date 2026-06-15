@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lucas Lawson — Développeur Full-Stack & IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cyan: #00f0ff;
+      --cyan-dim: rgba(0, 240, 255, 0.12);
+      --cyan-glow: rgba(0, 240, 255, 0.35);
+      --bg: #060b14;
+      --bg-card: #0c1625;
+      --bg-card2: #0f1e32;
+      --text: #e8f4f8;
+      --muted: #7a9ab5;
+      --border: rgba(0, 240, 255, 0.15);
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-display);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 4rem;
+      background: rgba(6, 11, 20, 0.8);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      color: var(--cyan);
+      letter-spacing: 0.04em;
+    }
+    .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.88rem; letter-spacing: 0.06em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+    }
+    .hero-glow {
+      position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,240,255,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 780px; }
+    .hero-eyebrow {
+      font-family: var(--font-mono); font-size: 0.8rem;
+      color: var(--cyan); letter-spacing: 0.16em; text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .hero-eyebrow::before { content: '> '; opacity: 0.6; }
+    h1 {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 700; line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+    h1 .accent { color: var(--cyan); }
+    .hero-sub {
+      margin-top: 1.4rem;
+      font-size: 1.1rem; color: var(--muted); max-width: 560px;
+      line-height: 1.75;
+    }
+    .hero-actions { display: flex; gap: 1rem; margin-top: 2.4rem; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--cyan); color: var(--bg);
+      padding: 0.75rem 1.8rem; border-radius: 6px;
+      font-weight: 600; font-size: 0.9rem; letter-spacing: 0.04em;
+      text-decoration: none; transition: box-shadow 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { box-shadow: 0 0 24px var(--cyan-glow); transform: translateY(-2px); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      border: 1px solid var(--border); color: var(--text);
+      padding: 0.75rem 1.8rem; border-radius: 6px;
+      font-size: 0.9rem; letter-spacing: 0.04em;
+      text-decoration: none; transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+    .hero-badges { display: flex; gap: 1rem; margin-top: 2.8rem; flex-wrap: wrap; }
+    .badge {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      color: var(--muted); border: 1px solid var(--border);
+      padding: 0.35rem 0.8rem; border-radius: 4px;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 7rem 4rem; }
+    .section-label {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      color: var(--cyan); letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 700; letter-spacing: -0.02em;
+      margin-bottom: 3.5rem;
+    }
+    .divider {
+      width: 48px; height: 2px;
+      background: var(--cyan); margin-bottom: 3.5rem;
+    }
+
+    /* ── ABOUT ── */
+    #about { max-width: 1100px; margin: 0 auto; }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+    }
+    .about-text p { color: var(--muted); line-height: 1.85; font-size: 1.02rem; }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .stat-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.6rem;
+    }
+    .stat-num {
+      font-family: var(--font-mono); font-size: 2rem;
+      color: var(--cyan); font-weight: 700;
+    }
+    .stat-desc { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .skills-inner { max-width: 1100px; margin: 0 auto; }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+    .skill-chip {
+      display: flex; align-items: center; gap: 0.6rem;
+      background: var(--bg-card2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.8rem 1rem;
+      font-size: 0.88rem; font-weight: 500;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .skill-chip:hover { border-color: var(--cyan); box-shadow: 0 0 12px var(--cyan-dim); }
+    .skill-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--cyan); flex-shrink: 0;
+    }
+    .soft-title {
+      font-family: var(--font-mono); font-size: 0.78rem;
+      color: var(--cyan); letter-spacing: 0.12em; text-transform: uppercase;
+      margin: 3rem 0 1.2rem;
+    }
+    .soft-chips { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+    .soft-chip {
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 0.4rem 1rem; font-size: 0.84rem; color: var(--muted);
+    }
+
+    /* ── PROJECTS ── */
+    #projects { max-width: 1100px; margin: 0 auto; }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .project-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 2rem;
+      display: flex; flex-direction: column; gap: 1rem;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .project-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .project-card:hover { border-color: rgba(0,240,255,0.3); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,240,255,0.06); }
+    .project-card:hover::before { opacity: 1; }
+    .project-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--cyan-dim); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+    .project-name { font-size: 1.1rem; font-weight: 600; }
+    .project-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.65; flex: 1; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      font-family: var(--font-mono); font-size: 0.72rem;
+      background: var(--cyan-dim); color: var(--cyan);
+      padding: 0.25rem 0.65rem; border-radius: 4px;
+    }
+    .project-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.82rem; color: var(--cyan); text-decoration: none;
+      letter-spacing: 0.04em; margin-top: 0.2rem;
+      opacity: 0.8; transition: opacity 0.2s;
+    }
+    .project-link:hover { opacity: 1; }
+
+    /* ── FORMATION ── */
+    #formation { background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .formation-inner { max-width: 1100px; margin: 0 auto; }
+    .timeline { display: flex; flex-direction: column; gap: 1.5rem; }
+    .timeline-item {
+      display: flex; gap: 2rem; align-items: flex-start;
+      background: var(--bg-card2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.8rem;
+    }
+    .timeline-icon {
+      width: 44px; height: 44px; flex-shrink: 0; border-radius: 10px;
+      background: var(--cyan-dim); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+    }
+    .tl-title { font-weight: 600; font-size: 1rem; margin-bottom: 0.25rem; }
+    .tl-place {
+      font-family: var(--font-mono); font-size: 0.78rem;
+      color: var(--cyan); letter-spacing: 0.06em;
+    }
+    .tl-desc { color: var(--muted); font-size: 0.88rem; margin-top: 0.5rem; }
+
+    /* ── CONTACT ── */
+    #contact { max-width: 700px; margin: 0 auto; text-align: center; }
+    #contact h2 { margin-bottom: 1rem; }
+    #contact p { color: var(--muted); font-size: 1.02rem; margin-bottom: 2.5rem; }
+    .contact-links { display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; }
+    .contact-btn {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.8rem 1.5rem; color: var(--text); text-decoration: none;
+      font-size: 0.9rem; transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+    .contact-btn:hover { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 14px var(--cyan-dim); }
+    .contact-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 2.5rem 4rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted); font-size: 0.82rem;
+      font-family: var(--font-mono);
+    }
+    footer span { color: var(--cyan); }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .fade-up {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 5rem 1.5rem; }
+      #hero { padding: 0 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      footer { padding: 2rem 1.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-up { opacity: 1; transform: none; transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">lucas.lawson<span style="color:var(--muted)">_</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#skills">Compétences</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#formation">Formation</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Disponible pour collaborer</p>
+    <h1>Lucas <span class="accent">Lawson</span></h1>
+    <p class="hero-sub">
+      Développeur Full-Stack & passionné d'IA basé à Cotonou, Bénin.
+      Je conçois des applications web fluides et intègre des solutions d'intelligence artificielle
+      pour résoudre des problèmes concrets.
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+        Voir mes projets
+      </a>
+      <a href="#contact" class="btn-ghost">Me contacter</a>
+    </div>
+    <div class="hero-badges">
+      <span class="badge">React & Next.js</span>
+      <span class="badge">Python & IA</span>
+      <span class="badge">IoT & Arduino</span>
+      <span class="badge">Node.js</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">// about</div>
+  <h2>Qui je suis</h2>
+  <div class="about-grid">
+    <div class="about-text fade-up">
+      <p>
+        Développeur Full-Stack junior et passionné par les nouvelles technologies, j'adore concevoir
+        des applications web fluides et intégrer des solutions d'intelligence artificielle pour
+        résoudre des problèmes concrets.
+      </p>
+      <br/>
+      <p>
+        Quand je ne code pas, je participe à des hackathons ou j'analyse les mécaniques de mes jeux
+        vidéo préférés — deux habitudes qui nourrissent ma façon de penser les systèmes complexes.
+      </p>
+    </div>
+    <div class="about-stats fade-up" style="transition-delay:0.1s">
+      <div class="stat-card">
+        <div class="stat-num">4+</div>
+        <div class="stat-desc">Projets réalisés</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">2+</div>
+        <div class="stat-desc">Années de pratique</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">2</div>
+        <div class="stat-desc">Certifications obtenues</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">∞</div>
+        <div class="stat-desc">Curiosité tech</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="skills-inner">
+    <div class="section-label">// skills</div>
+    <h2>Compétences</h2>
+    <div class="skills-grid">
+      <div class="skill-chip fade-up"><span class="skill-dot"></span>JavaScript</div>
+      <div class="skill-chip fade-up" style="transition-delay:.04s"><span class="skill-dot"></span>Python</div>
+      <div class="skill-chip fade-up" style="transition-delay:.08s"><span class="skill-dot"></span>React</div>
+      <div class="skill-chip fade-up" style="transition-delay:.12s"><span class="skill-dot"></span>Node.js</div>
+      <div class="skill-chip fade-up" style="transition-delay:.16s"><span class="skill-dot"></span>Arduino</div>
+      <div class="skill-chip fade-up" style="transition-delay:.20s"><span class="skill-dot"></span>OpenAI API</div>
+      <div class="skill-chip fade-up" style="transition-delay:.24s"><span class="skill-dot"></span>Hugging Face</div>
+      <div class="skill-chip fade-up" style="transition-delay:.28s"><span class="skill-dot"></span>SQL</div>
+      <div class="skill-chip fade-up" style="transition-delay:.32s"><span class="skill-dot"></span>Git</div>
+      <div class="skill-chip fade-up" style="transition-delay:.36s"><span class="skill-dot"></span>Tailwind CSS</div>
+      <div class="skill-chip fade-up" style="transition-delay:.40s"><span class="skill-dot"></span>Scikit-Learn</div>
+      <div class="skill-chip fade-up" style="transition-delay:.44s"><span class="skill-dot"></span>Pandas</div>
+    </div>
+    <div class="soft-title">// savoir-être</div>
+    <div class="soft-chips">
+      <span class="soft-chip">Résolution de problèmes</span>
+      <span class="soft-chip">Esprit d'équipe</span>
+      <span class="soft-chip">Autonomie</span>
+      <span class="soft-chip">Gestion du temps</span>
+      <span class="soft-chip">Adaptabilité</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">// projects</div>
+  <h2>Projets</h2>
+  <div class="projects-grid">
+
+    <div class="project-card fade-up">
+      <div class="project-icon">🗑️</div>
+      <div class="project-name">SmartTrash IoT</div>
+      <div class="project-desc">Prototype de poubelle intelligente automatisée avec capteur ultrasonique et servo-moteur, gérée par une carte Arduino pour optimiser la gestion des déchets.</div>
+      <div class="project-tags">
+        <span class="tag">Arduino</span>
+        <span class="tag">C++</span>
+        <span class="tag">IoT</span>
+      </div>
+      <a href="https://github.com/lucas-lawson/smart-trash" class="project-link" target="_blank">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        Voir le code
+      </a>
+    </div>
+
+    <div class="project-card fade-up" style="transition-delay:.08s">
+      <div class="project-icon">🏀</div>
+      <div class="project-name">HoopStore</div>
+      <div class="project-desc">Boutique en ligne moderne dédiée à la culture basketball, avec un système de panier dynamique, design épuré et expérience d'achat fluide.</div>
+      <div class="project-tags">
+        <span class="tag">React</span>
+        <span class="tag">Tailwind CSS</span>
+        <span class="tag">Node.js</span>
+      </div>
+      <a href="https://hoopstore-demo.vercel.app" class="project-link" target="_blank">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Voir le projet
+      </a>
+    </div>
+
+    <div class="project-card fade-up" style="transition-delay:.16s">
+      <div class="project-icon">🤖</div>
+      <div class="project-name">AI-Predictor</div>
+      <div class="project-desc">Modèle prédictif léger développé lors d'un hackathon IA pour analyser et classifier des données textuelles en temps réel avec une précision optimisée.</div>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">Scikit-Learn</span>
+        <span class="tag">Pandas</span>
+      </div>
+      <a href="https://github.com/lucas-lawson/ai-predictor" class="project-link" target="_blank">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        Voir le code
+      </a>
+    </div>
+
+    <div class="project-card fade-up" style="transition-delay:.24s">
+      <div class="project-icon">🎮</div>
+      <div class="project-name">GameBind Configurator</div>
+      <div class="project-desc">Outil web permettant aux joueurs d'optimiser et de générer leurs fichiers de configuration et raccourcis de touches pour les jeux de tir compétitifs.</div>
+      <div class="project-tags">
+        <span class="tag">HTML</span>
+        <span class="tag">CSS</span>
+        <span class="tag">JavaScript</span>
+      </div>
+      <a href="https://gamebind-config.com" class="project-link" target="_blank">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Voir le projet
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FORMATION -->
+<section id="formation">
+  <div class="formation-inner">
+    <div class="section-label">// formation</div>
+    <h2>Formation</h2>
+    <div class="timeline">
+      <div class="timeline-item fade-up">
+        <div class="timeline-icon">🎓</div>
+        <div>
+          <div class="tl-title">Licence en Génie Logiciel — Bac+2 en cours</div>
+          <div class="tl-place">Institut de Technologie d'Afrique (ITA)</div>
+          <div class="tl-desc">Formation axée sur le développement logiciel, les architectures systèmes et les bonnes pratiques de l'ingénierie informatique.</div>
+        </div>
+      </div>
+      <div class="timeline-item fade-up" style="transition-delay:.08s">
+        <div class="timeline-icon">🏆</div>
+        <div>
+          <div class="tl-title">Certificat de participation — Olympiade Nationale d'IA</div>
+          <div class="tl-place">Compétition nationale · Bénin</div>
+          <div class="tl-desc">Participation à la compétition nationale d'intelligence artificielle, confrontation de solutions de machine learning sur des données réelles.</div>
+        </div>
+      </div>
+      <div class="timeline-item fade-up" style="transition-delay:.16s">
+        <div class="timeline-icon">📜</div>
+        <div>
+          <div class="tl-title">Introduction to Data Science</div>
+          <div class="tl-place">Coursera · Certification en ligne</div>
+          <div class="tl-desc">Fondamentaux de la science des données : analyse exploratoire, visualisation et modélisation prédictive avec Python.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">// contact</div>
+  <h2>Travaillons ensemble</h2>
+  <p>Je suis ouvert aux opportunités de collaboration, de stage ou de freelance. N'hésitez pas à me contacter.</p>
+  <div class="contact-links">
+    <a href="mailto:lucas.lawson.dev@gmail.com" class="contact-btn">
+      <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      lucas.lawson.dev@gmail.com
+    </a>
+    <a href="https://github.com/lucas-lawson" class="contact-btn" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      GitHub
+    </a>
+    <a href="https://linkedin.com/in/lucas-lawson-dev" class="contact-btn" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  Construit par <span>Lucas Lawson</span> · Cotonou, Bénin · 2025
+</footer>
+
+<script>
+  // Fade-up on scroll
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+  // Typing cursor blink in nav logo
+  const logo = document.querySelector('.nav-logo');
+  setInterval(() => {
+    const cur = logo.querySelector('.cursor');
+    if (cur) cur.style.opacity = cur.style.opacity === '0' ? '1' : '0';
+  }, 530);
+</script>
+</body>
+</html>
